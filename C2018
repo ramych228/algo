@@ -1,0 +1,183 @@
+#include "bits/stdc++.h"
+using namespace std;
+
+#define rep(i, n) for(int i = 0; i < n; i++)
+#define forn(i, n) for(int i = 1; i <= n; i++)
+
+#define ull unsigned long long
+#define int long long
+#define all(v) v.begin(), v.end()
+#define pb push_back
+#define S second
+#define F first
+typedef double db;
+typedef long double ld;
+typedef vector<bool> vb;
+#define vvb vector<vector<bool>>
+typedef vector<char> vc;
+
+#define print(a) for(auto u: a) cout << u << ' ';
+typedef vector<int> vi;
+#define vvi vector<vector<int>>
+#define input(a, n) vi a(n); rep(i, n) cin >> a[i];
+
+
+typedef pair<int,int> pi;
+typedef pair<db, db> pdb;
+typedef vector<pair<int, int>> vpi;
+typedef vector<pair<string, string>> vps;
+typedef vector<vector<pair<int, int>>> vvpi;
+typedef vector<vector<char>> vvc;
+
+//random_device rd;
+//mt19937 rnd(chrono::high_resolution_clock::now().time_since_epoch().count());
+const int INF = 1e12 + 7;
+const double DELTA = 1;
+const int mod = 1e9 + 7;
+const int MAXN = 3e5;
+const int N = 1e3 + 5;
+
+vb know;
+vvpi gr;
+
+vi tin;
+int t = 0;
+vi top;
+int ans = 0;
+vi res;
+
+void dfs(int v, int p){
+    if (tin[v] >= 0) return;
+    tin[v] = t++;
+    top[v] = tin[v];
+    for(auto u2: gr[v]){
+        //cout << u2.first << ' ';
+        int u = u2.first;
+        if(u == p) continue;
+        if (tin[u] == -1){
+            dfs(u, v);
+            top[v] = min(top[v], top[u]);
+            if (top[u] > tin[v]){
+                ans++;
+                res.pb(u2.second);
+            }
+        } else{
+            top[v] = min(top[v], tin[u]);
+        }
+    }
+
+}
+
+vb used;
+int ban;
+void dfs1(int v, int p){
+    if(used[v]) return;
+    used[v] = true;
+    for(auto [u, i]: gr[v]){
+        if(ban == i || u == p) continue;
+        dfs1(u, v);
+    }
+}
+
+int32_t main() {
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    cout.precision(30);
+    ios::sync_with_stdio(0);
+
+#ifdef XXX
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+
+    int n, d;
+    cin >> n >> d;
+    know.assign(n, false);
+    know[0] = true;
+    gr.resize(n);
+
+    vvi sob;
+    rep(i, d){
+        int u, v, t;
+        cin >> u >> v >> t;
+        u--, v--;
+        sob.pb({t, u, v, i});
+    }
+
+    sort(all(sob));
+
+    for(auto &e: sob){
+        int u = e[1], v = e[2], ind = e[3];
+        if(know[u] || know[v]){
+            gr[u].pb({v, ind});
+            gr[v].pb({u, ind});
+            know[u] = true;
+            know[v] = true;
+        }
+    }
+
+    top.resize(n + 5);
+    tin.assign(n + 5, -1);
+    rep(i, n){
+        if (tin[i] < 0) dfs(i, -1);
+    }
+
+
+
+    //cout << ans << '\n';
+    //sort(all(res));
+    //rep(i, ans) cout << res[i] << ' ';
+    int curx = INF;
+    int reb = 0;
+    for(auto x: res){
+        int cur = 0;
+        ban = x;
+        used.assign(n, false);
+        dfs1(0, -1);
+
+        rep(i, n) cur += used[i];
+        if(curx > cur){
+            curx = min(cur, curx);
+            reb = ban;
+        }
+    }
+
+    rep(i, d){
+        int z = sob[i][3];
+        if(reb == z) cout << sob[i][1] + 1 << ' ' <<  sob[i][2] + 1 << ' ' << sob[i][0];
+    }
+    /*
+    int n;
+    cin >> n;
+
+    vvi s;
+
+    rep(i, n){
+        int l, r;
+        cin >> l >> r;
+        s.pb({l, -1, i});
+        s.pb({r, 1, i});
+    }
+
+    sort(all(s));
+
+    int check = 0, l = 0, li = 0, ri = 0, r = 0;
+
+    vvi ob;
+
+    for(auto &u: s){
+        int x = u[0], t = u[1], ind = u[2];
+        check += (-t);
+        if(t == -1 && check == 1){
+            l = x;
+            li = ind;
+        }
+        if(t == 1 && check == 0){
+            r = x;
+            ri = ind;
+            ob.pb({l, li, r, ri});
+        }
+
+    }
+     */
+}
