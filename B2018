@@ -1,0 +1,261 @@
+#include "bits/stdc++.h"
+using namespace std;
+
+#define rep(i, n) for(int i = 0; i < n; i++)
+#define forn(i, n) for(int i = 1; i <= n; i++)
+
+#define ull unsigned long long
+#define int long long
+#define all(v) v.begin(), v.end()
+#define pb push_back
+#define S second
+#define F first
+typedef double db;
+typedef long double ld;
+typedef vector<bool> vb;
+#define vvb vector<vector<bool>>
+typedef vector<char> vc;
+
+#define print(a) for(auto u: a) cout << u << ' ';
+typedef vector<int> vi;
+#define vvi vector<vector<int>>
+#define input(a, n) vi a(n); rep(i, n) cin >> a[i];
+
+
+typedef pair<int,int> pi;
+typedef pair<db, db> pdb;
+typedef vector<pair<int, int>> vpi;
+typedef vector<pair<string, string>> vps;
+typedef vector<vector<pair<int, int>>> vvpi;
+typedef vector<vector<char>> vvc;
+
+//random_device rd;
+//mt19937 rnd(chrono::high_resolution_clock::now().time_since_epoch().count());
+const int INF = 1e12 + 7;
+const double DELTA = 1;
+const int mod = 1e9 + 7;
+const int MAXN = 3e5;
+const int N = 1e3 + 5;
+
+
+/*
+vvpi gr;
+
+vi vis, grs, grsc;
+queue<int> q;
+int start = -1;
+vi ans;
+int check1;
+
+bool dfs(int v, int mask){
+    vis[v] = 1;
+    for(auto [x, t]: gr[v]){
+        if(t != -1 && mask & (1 << t) && x > v) {
+            grsc[v]--;
+            continue;
+        }
+        if(t != -1 && !(mask & (1 << t)) && x < v) {
+            grsc[v]--;
+            continue;
+        }
+        if(vis[x] == 0){
+            dfs(x, mask);
+            if(!ans.empty()){
+                ans.pb(v);
+                if (v == start){
+                    return true;
+                }
+                return false;
+            }
+        } else if(vis[x] == 1){
+            start = x;
+            ans.pb(v);
+            return false;
+        }
+    }
+    vis[v] = 2;
+}
+ */
+
+
+int32_t main() {
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    cout.precision(30);
+    ios::sync_with_stdio(0);
+
+#ifdef XXX
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+
+    int n;
+    cin >> n;
+
+    vvi pos(n, vi(3));
+    vpi res(n);
+
+    rep(i, n){
+        int l, r;
+        cin >> l >> r;
+        pos[i][0] = l, pos[i][1] = r, pos[i][2] = i;
+    }
+
+    sort(all(pos));
+    int mx = 0;
+
+    for(auto &u: pos){
+        int l = u[0], r = u[1], t = u[2];
+        if(mx >= r) res[t] = {-1, -1};
+        else{
+            res[t] = {max(l, mx), r};
+            mx = r;
+        }
+    }
+
+    for(auto u: res) cout << u.F << ' ' << u.S << '\n';
+    /*
+    vvi s;
+
+    rep(i, n){
+        int l, r;
+        cin >> l >> r;
+        s.pb({l, -1, i});
+        s.pb({r, 1, i});
+    }
+
+    sort(all(s));
+
+    int check = 0, l = 0, li = 0, ri = 0, r = 0;
+
+    vvi ob;
+
+    for(auto &u: s){
+        int x = u[0], t = u[1], ind = u[2];
+        check += (-t);
+        if(t == -1 && check == 1){
+            l = x;
+            li = ind;
+        }
+        if(t == 1 && check == 0){
+            r = x;
+            ri = ind;
+            ob.pb({l, li, r, ri});
+        }
+
+    }
+
+    */
+    /*
+
+    int n, m;
+    cin >> n >> m;
+    gr.resize(n);
+    grs.resize(n);
+
+
+    int cnt = 0;
+    rep(i, m){
+        int u, v, t;
+        cin >> u >> v >> t;
+        u--, v--;
+        if(t == 1) {
+            gr[u].pb({v, -1});
+            grs[u]++;
+        }
+        else{
+            gr[u].pb({v, cnt});
+            grs[u]++;
+            gr[v].pb({u, cnt});
+            grs[v]++;
+            cnt++;
+        }
+    }
+
+    int mask = (1 << cnt);
+
+    bool bigflag = false;
+    int goodmask = -1;
+
+    rep(i, mask){
+        check1 = 0;
+        bool flag = true;
+        vis.assign(n, 0);
+        //rep(j, n) if(gr[j].empty()) check1++;
+        //if(check1 != 1) continue;
+        rep(j, n){
+            if(!vis[j]) {
+                grsc = grs;
+                if(dfs(j, i) && count(all(grsc), 0) == 1) {
+                    flag = false;
+                    break;
+                }
+            }
+        }
+        if(flag){
+            bigflag = true;
+            goodmask = i;
+            break;
+        }
+    }
+
+    if(bigflag){
+        rep(u, n){
+            for(auto [v, t]: gr[u]){
+                if(t != -1) {
+                    if (goodmask & (1 << t)) cout << min(u, v) + 1 << ' ' << max(u, v) + 1 << '\n';
+                    else cout << max(u, v) + 1 << ' ' << min(u, v) + 1 << '\n';
+                }
+            }
+        }
+    }
+
+    */
+    /*
+    int n;
+    cin >> n;
+    input(w, n);
+    vi dp(n, 0);
+    dp[0] = w[0];
+    bool ver = true;
+    forn(i, n - 1){
+        if(w[i] == 0){
+            ver = true;
+        } else{
+            dp[i] = dp[i - 1];
+            if(ver && w[i] >= w[i - 1]) dp[i] += max(w[i], w[i - 1]);
+            else{
+                ver = false;
+                dp[i] += min(w[i], w[i - 1]);
+            }
+        }
+    }
+
+    reverse(all(w));
+    vi dp2(n, 0);
+    dp2[0] = w[0];
+    ver = true;
+    rep(j, n) {
+        for(int i = j; i < n; i++) {
+            if (w[i] == 0) {
+                ver = true;
+            } else {
+                dp2[i] = dp2[i - 1];
+                if (ver && w[i] >= w[i - 1]) dp2[i] += max(w[i], w[i - 1]);
+                else {
+                    ver = false;
+                    dp2[i] += min(w[i], w[i - 1]);
+                }
+            }
+        }
+    }
+
+    //print(dp);
+    //cout << '\n';
+
+    cout << max(*max_element(all(dp2)), *max_element(all(dp)));
+    */
+    /*
+
+     */
+}
