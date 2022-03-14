@@ -1,0 +1,65 @@
+#include "bits/stdc++.h"
+using namespace std;
+
+#define rep(i, n) for(int i = 0; i < n; i++)
+#define forn(i, n) for(int i = 1; i <= n; i++)
+#define ll long long
+#define ull unsigned long long
+#define int long long
+#define all(v) v.begin(), v.end()
+#define pb push_back
+#define S second
+#define F first
+typedef double db;
+typedef long double ld;
+typedef vector<int> vi;
+typedef vector<bool> vb;
+typedef vector<char> vc;
+#define vvi vector<vector<int>>
+typedef pair<int,int> pi;
+typedef vector<pair<int, int>> vpi;
+typedef vector<pair<string, string>> vps;
+typedef vector<vector<pair<int, int>>> vvpi;
+typedef vector<vector<char>> vvc;
+
+//random_device rd;
+//mt19937 rnd(chrono::high_resolution_clock::now().time_since_epoch().count());
+const int INF = 1e13;
+const double DELTA = 1;
+const int mod = 1e9 + 7;
+const int MAXN = 3e5;
+const int N = 3e5;
+
+
+
+int32_t main() {
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    cout.precision(30);
+#ifdef XXX
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+    int n;
+    cin >> n;
+    vi a(n);
+    rep(i, n) cin >> a[i];
+    int l = 0, r = 0, tmp = -INF, ans = 0, mx = a[0];
+
+    rep(i, n){
+        if(a[i] == mx) r = i;
+        if(a[i] > mx) r = i, l = i, mx = a[i];
+    }
+    rep(i, l){
+        if(tmp < a[i]) tmp = a[i];
+        ans += tmp - a[i];
+    }
+    for(int i = l; i < r; i++) ans += mx - a[i];
+    reverse(all(a));
+    int help = -INF;
+    rep(i, n - r){
+        if(a[i] >= help) help = a[i];
+        ans += help - a[i];
+    }
+    cout << ans;
+}
