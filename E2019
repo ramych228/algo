@@ -1,0 +1,81 @@
+#include "bits/stdc++.h"
+using namespace std;
+
+#define rep(i, n) for(int i = 0; i < n; i++)
+#define forn(i, n) for(int i = 1; i <= n; i++)
+#define print(a) for(auto u: a) cout << u << ' ';
+typedef vector<int> vi;
+
+#define input(a, n) vi a(n); rep(i, n) cin >> a[i];
+
+#define ull unsigned long long
+#define int long long
+#define all(v) v.begin(), v.end()
+#define pb push_back
+#define S second
+#define F first
+typedef double db;
+typedef long double ld;
+typedef vector<bool> vb;
+typedef vector<char> vc;
+#define vvi vector<vector<int>>
+#define vvb vector<vector<bool>>
+
+typedef pair<int,int> pi;
+typedef vector<pair<int, int>> vpi;
+typedef vector<pair<string, string>> vps;
+typedef vector<vector<pair<int, int>>> vvpi;
+typedef vector<vector<char>> vvc;
+
+//random_device rd;
+//mt19937 rnd(chrono::high_resolution_clock::now().time_since_epoch().count());
+const int INF = 1e12 + 7;
+const double DELTA = 1;
+const int mod = 1e9 + 7;
+const int MAXN = 3e5;
+const int N = 3e5;
+
+
+
+int32_t main() {
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    cout.precision(30);
+    ios::sync_with_stdio(0);
+
+#ifdef XXX
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+
+    int n, m;
+    cin >> n >> m;
+    int mask = 0;
+    int step = 1;
+    vi a(n);
+
+    rep(i, n){
+        int x;
+        cin >> x;
+        a[i] = x;
+        mask += (x * step);
+        step *= 2;
+    }
+
+    rep(i, m){
+        int t, l, r;
+        cin >> t >> l >> r;
+        l--; r--;
+        if(t == 1){
+            for(int j = l; j <= r; j+=2)  a[j] = (a[j] + 1) % 2;
+        } else{
+            int res = 0;
+            for(int j = l; j <= r; j++) res += a[j];
+            cout << res << '\n';
+        }
+    }
+
+
+
+
+}
