@@ -1,0 +1,183 @@
+#include "bits/stdc++.h"
+using namespace std;
+
+#define rep(i, n) for(int i = 0; i < n; i++)
+#define forn(i, n) for(int i = 1; i <= n; i++)
+
+#define ull unsigned long long
+#define int long long
+#define all(v) v.begin(), v.end()
+#define pb push_back
+#define S second
+#define F first
+typedef double db;
+typedef long double ld;
+typedef vector<bool> vb;
+#define vvb vector<vector<bool>>
+typedef vector<char> vc;
+
+#define print(a) for(auto u: a) cout << u << ' ';
+typedef vector<int> vi;
+#define vvi vector<vector<int>>
+#define input(a, n) vi a(n); rep(i, n) cin >> a[i];
+
+
+typedef pair<int,int> pi;
+typedef pair<db, db> pdb;
+typedef vector<pair<int, int>> vpi;
+typedef vector<pair<string, string>> vps;
+typedef vector<vector<pair<int, int>>> vvpi;
+typedef vector<vector<char>> vvc;
+
+//random_device rd;
+//mt19937 rnd(chrono::high_resolution_clock::now().time_since_epoch().count());
+const int INF = 1e12 + 7;
+const double DELTA = 1;
+const int mod = 1e9 + 7;
+const int MAXN = 3e5;
+const int N = 1e3 + 5;
+
+vvi gr;
+vi cnt;
+
+void dfs(int s, int p){
+    cnt[s] = 1;
+    for(auto u: gr[s]){
+        if(u == p) continue;
+        dfs(u, s);
+        cnt[s] += cnt[u];
+    }
+}
+
+
+int32_t main() {
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    cout.precision(30);
+    ios::sync_with_stdio(false);
+
+#ifdef XXX
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+
+    int t;
+    cin >> t;
+    rep(_, t){
+        int n, k;
+        cin >> n >> k;
+
+        vvi a(n,vi(k, 0));
+        rep(i, n){
+            rep(j, k){
+                char c;
+                cin >> c;
+                a[i][j] = c == '1';
+            }
+        }
+
+        vector<vvi> dp(k, vvi(n, vi(n, INF)));
+        for (int i = k - 1; i > -1; i--){
+            rep(l, n){
+                vi cnt1(1, 0);
+                for (int r = l; r < n; r++){
+                    cnt1.pb(a[r][i] + cnt1[cnt1.size() - 1]);
+
+                    int cnt0 = 0;
+                    for (int m = r - l + 1; m > -1; m--){
+                        if (l + m <= r) cnt0 += 1 ^ a[l + m][i];
+
+                        int tmp = cnt1[m] + cnt0;
+                        if (k - 1 > i) {
+                            if (l + m <= r)
+                                tmp += dp[i + 1][l + m][r];
+                            if (m > 0)
+                                tmp += dp[i + 1][l][l + m - 1];
+                        }
+
+                        dp[i][l][r] = min(dp[i][l][r], tmp);
+                    }
+                }
+            }
+        }
+
+        cout << dp[0][0][n - 1] << "\n";
+    }
+
+
+
+    /*
+    int t;
+    cin >> t;
+
+    rep(_, t){
+        int n, k;
+        cin >> n >> k;
+        gr.resize(n);
+        cnt.resize(n);
+
+        rep(i, n - 1){
+            int u, v;
+            cin >> u >> v;
+            u--, v--;
+            gr[u].pb(v);
+            gr[v].pb(u);
+        }
+
+        if(k == 1 || k == 2){
+            vi dist(n, INF);
+            vb used(n, false);
+            queue<int> q;
+
+            dist[0] = 0;
+            q.push(0);
+
+            while(!q.empty()){
+                int u = q.front(); q.pop();
+                if(used[u]) continue;
+                used[u] = true;
+
+                for(auto v: gr[u]){
+                    dist[v] = min(dist[v], dist[u] + 1);
+                    q.push(v);
+                }
+            }
+
+            int ind = 0, mx = -1;
+            rep(i, n){
+                if(dist[i] > mx){
+                    mx = dist[i];
+                    ind = i;
+                }
+            }
+
+            vi dist2(n, INF);
+            vb used2(n, false);
+            queue<int> q2;
+
+            dist2[ind] = 0;
+            q2.push(ind);
+
+            while(!q2.empty()){
+                int u = q2.front(); q2.pop();
+                if(used2[u]) continue;
+                used2[u] = true;
+
+                for(auto v: gr[u]){
+                    dist2[v] = min(dist2[v], dist2[u] + 1);
+                    q2.push(v);
+                }
+            }
+
+            if(k == 1) cout << *max_element(all(dist2)) * 10 << '\n';
+            else cout << *max_element(all(dist2)) * 20 << '\n';
+        } else{
+            cout << n * 10 << '\n';
+        }
+
+        gr.clear();
+
+
+    }
+    */
+}
