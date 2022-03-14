@@ -1,0 +1,159 @@
+#include "bits/stdc++.h"
+using namespace std;
+
+#define rep(i, n) for(int i = 0; i < n; i++)
+#define forn(i, n) for(int i = 1; i <= n; i++)
+#define ll long long
+#define ull unsigned long long
+//#define int long long
+#define all(v) v.begin(), v.end()
+#define pb push_back
+#define S second
+#define F first
+typedef double db;
+typedef long double ld;
+typedef vector<int> vi;
+typedef vector<bool> vb;
+typedef vector<char> vc;
+#define vvi vector<vector<int>>
+#define vvb vector<vector<bool>>
+typedef pair<int,int> pi;
+typedef vector<pair<int, int>> vpi;
+typedef vector<pair<string, string>> vps;
+typedef vector<vector<pair<int, int>>> vvpi;
+typedef vector<vector<char>> vvc;
+
+//random_device rd;
+//mt19937 rnd(chrono::high_resolution_clock::now().time_since_epoch().count());
+const int INF = 1e9 + 7;
+const double DELTA = 1;
+const int mod = 1e9 + 7;
+const int MAXN = 3e5;
+const int N = 3e5;
+
+int n, m, kol;
+vvb a;
+vvb used;
+bool flag;
+vpi moves {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+
+bool real(int x, int y){
+    return x > -1 && x < n && y > -1 && y < m && used[x][y];
+}
+
+void dfs(int x, int y){
+    if(!used[x][y]) return;
+    if(y == m - 1) flag = true;
+    used[x][y] = false;
+    for(auto [dx, dy]: moves){
+        int nx = x + dx, ny = y + dy;
+        if(real(nx, ny)) dfs(nx, ny);
+    }
+}
+
+void ban(int x, int y, int d){
+    int nd = 1;
+    while(nd <= d) {
+        int nx = x, ny = y;
+        ny += nd;
+        while (ny != y) {
+            if (real(nx, ny)) used[nx][ny] = false;
+            ny--;
+            nx++;
+        }
+        if (real(nx, ny)) used[nx][ny] = false;
+        while (nx != x) {
+            if (real(nx, ny)) used[nx][ny] = false;
+            ny--;
+            nx--;
+        }
+        if (real(nx, ny)) used[nx][ny] = false;
+
+        while (ny != y) {
+            if (real(nx, ny)) used[nx][ny] = false;
+            ny++;
+            nx--;
+        }
+        if (real(nx, ny)) used[nx][ny] = false;
+
+        while (nx != x) {
+            if (real(nx, ny)) used[nx][ny] = false;
+            ny++;
+            nx++;
+        }
+        if (real(nx, ny)) used[nx][ny] = false;
+        /*
+        cout << x << ' ' << y << ' ' << nd << '\n';
+        rep(i, n) {
+            rep(j, m){
+                cout << used[i][j] << ' ';
+            }
+            cout << '\n';
+        }
+        */
+        nd++;
+    }
+}
+
+
+int main() {
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    cout.precision(30);
+    ios::sync_with_stdio(0);
+
+#ifdef XXX
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+
+    cin >> n >> m >> kol;
+    a.resize(n, vb(m, true));
+    vpi p(kol);
+    rep(i, kol){
+        int x, y;
+        cin >> x >> y;
+        x--; y--;
+        a[x][y] = false;
+        p[i] = {x, y};
+    }
+
+    int l = 0, r = min(n, m), ans = 0;
+
+    while(r - l > 1){
+
+        int mi = (r + l) / 2;
+        flag = false;
+        used = a;
+
+        for(auto [x1, y1]: p){
+            ban(x1, y1, mi);
+        }
+        /*
+        cout << mi << '\n';
+        rep(i, n) {
+            rep(j, m){
+                cout << used[i][j] << ' ';
+            }
+            cout << '\n';
+        }
+         */
+
+        rep(i, n){
+            dfs(i, 0);
+        }
+
+
+
+
+        if(flag) {
+            ans = max(ans, mi);
+            //cout << mi << "YEAAAAH\n";
+            l = mi;
+        } else{
+            r = mi;
+        }
+    }
+
+    cout << ans + 1;
+}
