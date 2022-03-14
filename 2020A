@@ -1,0 +1,60 @@
+#include "bits/stdc++.h"
+using namespace std;
+
+#define rep(i, n) for(int i = 0; i < n; i++)
+#define forn(i, n) for(int i = 1; i <= n; i++)
+#define ll long long
+#define ull unsigned long long
+#define int long long
+#define all(v) v.begin(), v.end()
+#define pb push_back
+#define S second
+#define F first
+typedef double db;
+typedef long double ld;
+typedef vector<int> vi;
+typedef vector<bool> vb;
+typedef vector<char> vc;
+#define vvi vector<vector<int>>
+typedef pair<int,int> pi;
+typedef vector<pair<int, int>> vpi;
+typedef vector<pair<string, string>> vps;
+typedef vector<vector<pair<int, int>>> vvpi;
+typedef vector<vector<char>> vvc;
+
+//random_device rd;
+//mt19937 rnd(chrono::high_resolution_clock::now().time_since_epoch().count());
+const int INF = 1e9 + 7;
+const double DELTA = 1;
+const int mod = 1e9 + 7;
+const int MAXN = 3e5;
+const int N = 3e5;
+
+int32_t main() {
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    cout.precision(30);
+#ifdef XXX
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+    int n;
+    cin >> n;
+    vi a(n);
+    rep(i, n) cin >> a[i];
+    int tmp = 1;
+    bool flag = false;
+    if(a[0] % 2) flag = true;
+    for(int i = 1; i < n; i++){
+        int u = a[i] % 2;
+        if(u){
+            if(flag) cout << 'x';
+            else{
+                flag = true;
+                cout << '+';
+            }
+        } else{
+            cout << '+';
+        }
+    }
+}
