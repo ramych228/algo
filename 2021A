@@ -1,0 +1,62 @@
+#include "bits/stdc++.h"
+using namespace std;
+
+#define rep(i, n) for(int i = 0; i < n; i++)
+#define forn(i, n) for(int i = 1; i <= n; i++)
+
+#define ull unsigned long long
+#define int long long
+#define all(v) v.begin(), v.end()
+#define pb push_back
+#define S second
+#define F first
+typedef double db;
+typedef long double ld;
+typedef vector<bool> vb;
+#define vvb vector<vector<bool>>
+typedef vector<char> vc;
+
+#define print(a) for(auto u: a) cout << u << ' ';
+typedef vector<int> vi;
+#define vvi vector<vector<int>>
+#define input(a, n) vi a(n); rep(i, n) cin >> a[i];
+
+
+typedef pair<int,int> pi;
+typedef pair<db, db> pdb;
+typedef vector<pair<int, int>> vpi;
+typedef vector<pair<string, string>> vps;
+typedef vector<vector<pair<int, int>>> vvpi;
+typedef vector<vector<char>> vvc;
+
+//random_device rd;
+//mt19937 rnd(chrono::high_resolution_clock::now().time_since_epoch().count());
+const int INF = 1e12 + 7;
+const double DELTA = 1;
+const int mod = 1e9 + 7;
+const int MAXN = 3e5;
+const int N = 1e3 + 5;
+
+
+int32_t main() {
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    cout.precision(30);
+    ios::sync_with_stdio(false);
+
+#ifdef XXX
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+
+    int t;
+    cin >> t;
+
+    rep(_, t){
+        int n, d;
+        cin >> n >> d;
+        int z = (int)(n - 2) / (2 * d) + 1;
+        cout << max((int)0, z) << '\n';
+    }
+
+}
