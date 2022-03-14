@@ -1,0 +1,96 @@
+#include "bits/stdc++.h"
+using namespace std;
+
+#define rep(i, n) for(int i = 0; i < n; i++)
+#define forn(i, n) for(int i = 1; i <= n; i++)
+
+#define ull unsigned long long
+#define int long long
+#define all(v) v.begin(), v.end()
+#define pb push_back
+#define S second
+#define F first
+typedef double db;
+typedef long double ld;
+typedef vector<bool> vb;
+#define vvb vector<vector<bool>>
+typedef vector<char> vc;
+
+#define print(a) for(auto u: a) cout << u << ' ';
+typedef vector<int> vi;
+#define vvi vector<vector<int>>
+#define input(a, n) vi a(n); rep(i, n) cin >> a[i];
+
+
+typedef pair<int,int> pi;
+typedef pair<db, db> pdb;
+typedef vector<pair<int, int>> vpi;
+typedef vector<pair<string, string>> vps;
+typedef vector<vector<pair<int, int>>> vvpi;
+typedef vector<vector<char>> vvc;
+
+//random_device rd;
+//mt19937 rnd(chrono::high_resolution_clock::now().time_since_epoch().count());
+const int INF = 1e12 + 7;
+const double DELTA = 1;
+const int mod = 1e9 + 7;
+const int MAXN = 3e5;
+const int N = 1e3 + 5;
+
+db r(db x1, db y1, db x2, db y2){
+    return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+}
+
+pi newvec(db x1, db y1, db x2, db y2){
+    return {x2 - x1, y2 - y1};
+}
+
+db scal(pdb a, pdb b){
+    return a.F * b.F + a.S * b.S;
+}
+
+db fvec(pdb a, pdb b){
+    return a.F * b.S - a.S * b.F;
+}
+
+db p_line(db xc, db yc, db xa, db ya, db xb, db yb){
+    pi ac = newvec(xc, yc, xa, ya);
+    pi bc = newvec(xc, yc, xb, yb);
+    db rab = r(xa, ya, xb, yb);
+    return abs(fvec(ac, bc)) / rab;
+}
+
+
+
+int32_t main() {
+    cin.tie(nullptr);
+    cout.tie(nullptr);
+    cout.precision(30);
+    ios::sync_with_stdio(0);
+
+#ifdef XXX
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+#endif
+
+    int n, m;
+    cin >> n >> m;
+    vi a(m);
+    vi mp(n + 1);
+    vi mp2(n + 1, 0);
+    rep(i, m){
+        cin >> a[i];
+        mp[a[i]]++;
+    }
+
+    int mx = *max_element(all(mp));
+
+    for(auto u: a){
+        mp2[u]++;
+        if(mp2[u] == mx){
+            cout << u << '\n';
+            break;
+        }
+    }
+
+}
